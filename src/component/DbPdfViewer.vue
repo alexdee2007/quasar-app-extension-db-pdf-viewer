@@ -1,19 +1,25 @@
 <template>
-  <q-dialog ref="dialog" no-backdrop-dismiss no-esc-dismiss @before-show="onBeforeShow" :maximized="$q.screen.lt.md">
+  <q-dialog ref="dialog" persistent @before-show="onBeforeShow" :maximized="$q.screen.lt.md">
 
-    <db-dialog-layout ref="dialogLayout" :context="{label: name, dialogWidth: '1280px', styleFn }">
-      <q-pdfviewer
-        :value="true"
-        :src="pdfSrc"
-        type="pdfjs"
-        />
-      <template v-slot:footer>
-        <q-toolbar>
-          <q-space />
-          <q-btn label="Відміна" color="primary" @click="hide" />
-        </q-toolbar>
-      </template>
-    </db-dialog-layout>
+    <q-layout ref="layout" container view="hhh lpr fff" class="bg-white" style="max-width: 1280px;">
+
+      <slot name="header">
+        <q-header elevated >
+          <q-toolbar>
+            <q-toolbar-title>{{ name }}</q-toolbar-title>
+            <q-btn flat round dense icon="close" v-close-popup />
+          </q-toolbar>
+        </q-header>
+      </slot>
+
+      <q-page-container>
+        <q-page padding :style-fn="styleFn">
+          <q-pdfviewer :value="true" :src="pdfSrc" type="pdfjs" />
+        </q-page>
+      </q-page-container>
+
+      <slot name="footer"></slot>
+    </q-layout>
 
   </q-dialog>
 </template>
@@ -44,7 +50,7 @@
         this.$refs.dialog.hide()
       },
       styleFn(offset) {
-        return this.$refs.dialogLayout ? {height: (this.$refs.dialogLayout.$refs.layout.containerHeight - offset) + 'px'} : null;
+        return this.$refs.layout ? {height: (this.$refs.layout.containerHeight - offset) + 'px'} : null;
       },
       async onBeforeShow() {
         try {
