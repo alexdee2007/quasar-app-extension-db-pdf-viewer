@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref="dialog" persistent @before-show="onBeforeShow" :maximized="$q.screen.lt.md">
+  <q-dialog ref="dialog" persistent @before-show="onBeforeShow" :maximized="$q.screen.lt.md" @hide="onHide">
 
     <q-layout ref="layout" container view="hhh lpr fff" class="bg-white" style="max-width: 1280px;">
 
@@ -48,6 +48,9 @@
       },
       hide() {
         this.$refs.dialog.hide()
+      },
+      onHide() {
+	this.pdfSrc = '';
       },
       styleFn(offset) {
         return this.$refs.layout ? {height: (this.$refs.layout.containerHeight - offset) + 'px'} : null;
