@@ -1,3 +1,5 @@
+const path = require('path');
+
 /**
  * Quasar App Extension index/runner script
  * (runs on each dev/build)
@@ -27,4 +29,5 @@ module.exports = function (api) {
   // a boot file which registers our new UI component;
   // "extendConf" will be defined below (keep reading the tutorial)
   api.extendQuasarConf(extendConf)
+  api.chainWebpack(chain => chain.resolve.alias.set('db-pdf-viewer', path.resolve(__dirname)));
 }
