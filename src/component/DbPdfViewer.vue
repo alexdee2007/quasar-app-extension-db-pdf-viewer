@@ -42,6 +42,11 @@
         pdfSrc: ''
       }
     },
+    watch: {
+      src: function () {
+        this.onBeforeShow();
+      }
+    },
     methods: {
       show() {
         this.$refs.dialog.show()
@@ -50,7 +55,7 @@
         this.$refs.dialog.hide()
       },
       onHide() {
-	this.pdfSrc = '';
+        this.pdfSrc = '';
       },
       styleFn(offset) {
         return this.$refs.layout ? {height: (this.$refs.layout.containerHeight - offset) + 'px'} : null;
