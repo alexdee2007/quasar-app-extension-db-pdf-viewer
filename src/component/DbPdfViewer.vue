@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref="dialog" persistent @before-show="onBeforeShow" :maximized="$q.screen.lt.md" @hide="onHide">
+  <q-dialog ref="dialog" persistent :maximized="$q.screen.lt.md" @hide="onHide">
 
     <q-layout ref="layout" container view="hhh lpr fff" class="bg-white" style="max-width: 1280px;">
 
@@ -43,8 +43,11 @@
       }
     },
     watch: {
-      src: function () {
-        this.onBeforeShow();
+      src: {
+        handler() {
+          this.loadPdf();
+        },
+        immediate: true
       }
     },
     methods: {
@@ -60,7 +63,7 @@
       styleFn(offset) {
         return this.$refs.layout ? {height: (this.$refs.layout.containerHeight - offset) + 'px'} : null;
       },
-      async onBeforeShow() {
+      async loadPdf() {
         try {
           this.$q.loading.show({message: 'Завантаження...'});
           const {data} = this.src instanceof Blob ? {data: this.src} : await axios.get(this.src, {responseType: 'blob'});
